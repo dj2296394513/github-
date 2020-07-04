@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bootstrap 101 Template</title>
+    <!-- Bootstrap -->
+    <link href="./lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .login-panel {
+            margin-top: 100px;
+        }
+
+        .vCode {
+            height: 36px;
+            cursor: pointer;
+        }
+
+        .wrap {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: url('images/bg03.jpg') center bottom no-repeat;
+            overflow: auto;
+        }
+
+        .navbar-brand {
+            padding: 10px 15px;
+        }
+
+        .form-horizontal {
+            margin-top: 10px;
+        }
+
+        .form-horizontal .form-group {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <nav class="navbar  navbar-inverse navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mymenu">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#"><img src="images/logo.png"></a>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="panel panel-default login-panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><b>用户登录</b></h3>
+                    </div>
+                    <div class="panel-body">
+                        <form action="#" method="post" class="form-horizontal">
+                            <div class="form-group">
+                                <label for="userName" class="col-sm-2 control-label">用户名</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="username" value="叶良辰" class="form-control" id="username"
+                                           placeholder="请输入用户名" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="userPass" class="col-sm-2 control-label">密码</label>
+                                <div class="col-sm-10">
+                                    <input type="password" name="password" value="1234" class="form-control" id="password"
+                                           placeholder="请输入密码" />
+                                </div>
+                            </div>
+                            <!-- <div class="form-group">
+                              <label for="vCode" class="col-sm-2 control-label">验证码</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="vcode" class="form-control" id="vcode" placeholder="请输入验证码" />
+                              </div>
+                              <div class="col-sm-4">
+
+                            <img class="vCode" src="/captcha" alt="" />
+                        </div>
+                      </div> -->
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" class="btn btn-success login">
+                                        登陆
+                                    </button>
+                                    <a href="./register.html" class="btn btn-default">注册</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="./lib/bootstrap/js/jquery-1.12.4.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="./lib/bootstrap/js/bootstrap.min.js"></script>
+<script>
+    //入口函数
+    $(function () {
+        //一:登录功能
+        //1. 给登录按钮设置一个点击事件
+        $('.login').on('click', function (e) {
+            //去挥默认的提交行为
+            e.preventDefault()
+            let username = $('#username').val().trim()//账号
+            let password = $('#password').val().trim()//密码
+            //3.发送ajax请求，获取返回的数据
+            $.ajax({
+                type: 'post',
+                url: 'http://127.0.0.1:4399/login',
+                data: {
+                    username,
+                    password
+                },
+                success: function (backData) {
+                    if (backData.code == 200) {
+                        //4.如果成功，就跳转到首页
+                        alert('登录成功')
+                        window.location.href = 'index.html'
+                    } else {
+                        alert(backData.msg)
+                    }
+                }
+            })
+        })
+    })
+
+</script>
