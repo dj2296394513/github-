@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>登录</title>
+
+    <!-- 导入jquery -->
+    <script src="./libs/jquery-1.12.4.min.js"></script>
+    <!-- 导入bootstrap -->
+    <link rel="stylesheet" href="./libs/bootstrap/css/bootstrap.min.css">
+    <script src="./libs/bootstrap/js/bootstrap.min.js"></script>
+    <!-- 导入art-template -->
+    <script src="./libs/template-web.js"></script>
+    <!-- 导入md5 -->
+    <script src="./libs/md5.min.js"></script>
+    <style>
+        /* 登陆框上margin */
+        .my-panel {
+            margin-top: 200px;
+        }
+
+        .btn-width {
+            width: 200px;
+        }
+    </style>
+</head>
+
+<body>
+<!-- bootstrap的容器  带版心的-->
+<div class="container">
+    <!-- 栅格的行 -->
+    <div class="row">
+        <!-- 栅格的列 offset 列偏移 -->
+        <div class="col-xs-6 col-xs-offset-3">
+            <!-- 面板 -->
+            <div class="panel panel-default panel-primary my-panel">
+                <!-- 面板的标题 -->
+                <div class="panel-heading">
+                    <h3 class="panel-title">登录英雄管理系统</h3>
+                </div>
+                <!-- 面板的内容 -->
+                <div class="panel-body">
+                    <!-- 表单 -->
+                    <form class="form-horizontal" id="form">
+                        <div class="form-group">
+                            <label for="userName" class="col-sm-2 control-label">用户名</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="username" class="form-control" id="username" placeholder="王**">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="passWord" class="col-sm-2 control-label">密&nbsp;&nbsp;&nbsp;&nbsp;码</label>
+                            <div class="col-sm-10">
+                                <input type="password" name="password" class="form-control" id="password" placeholder="密码">
+                            </div>
+                        </div>
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <input type="submit" class="btn btn-success btn-width btn-login" value="登录">
+                            <a href="./register.html"><button type="button" class="btn btn-danger btn-width">注册</button></a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // 入口函数
+    $(function () {
+        //一:登录
+        //1.给登录按钮设置一个点击事件
+        $('.btn-login').on('click', function (e) {
+            //2.去掉默认的提交行为
+            e.preventDefault()
+            //3.获取用户输入的账号和密码(要和注册的时候一样的加密规则的加密后的密码)
+            let username = $('#username').val().trim()
+            // 把用户输入的密码用md5加盐的方式加密后，重新赋值给密码输入框
+            $('#password').val(md5($('#password').val().trim(), 'dg'))
+            let password = $('#password').val().trim()
+            //4.发送ajax请求，完成登录
+            $.ajax({
+                type: "post",
+                url: 'http://127.0.0.1:4399/user/login',
+                data: { username, password },
+                success: function (backData) {
+                    if (backData.code == 200) {
+                        alert('登录成功');
+                        window.location.href = './index.html'
+                    } else {
+                        alert(backData.msg)
+                    }
+                }
+            })
+        })
+    })
+</script>
+</body>
+
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>注册</title>
+    <!-- 导入jquery -->
+    <script src="./libs/jquery-1.12.4.min.js"></script>
+    <!-- 导入bootstrap -->
+    <link rel="stylesheet" href="./libs/bootstrap/css/bootstrap.min.css">
+    <script src="./libs/bootstrap/js/bootstrap.min.js"></script>
+    <!-- 导入art-template -->
+    <script src="./libs/template-web.js"></script>
+    <!-- 导入md5 -->
+    <script src="./libs/md5.min.js"></script>
+    <style>
+        /* 把登录框往下压 */
+        .my-panel {
+            margin-top: 200px;
+        }
+    </style>
+</head>
+
+<body>
+<!-- bootstrap的容器  带版心的-->
+<div class="container">
+    <!-- 栅格的行 -->
+    <div class="row">
+        <!-- 栅格的列 offset 列偏移 -->
+        <div class="col-xs-6 col-xs-offset-3">
+            <!-- 面板 -->
+            <div class="panel panel-default panel-primary my-panel">
+                <!-- 面板的标题 -->
+                <div class="panel-heading">
+                    <h3 class="panel-title">登录英雄管理系统</h3>
+                </div>
+                <!-- 面板的内容 -->
+                <div class="panel-body">
+                    <!-- 表单 -->
+                    <form class="form-horizontal" id="form">
+                        <div class="form-group">
+                            <label for="userName" class="col-sm-2 control-label">用户名</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="username" class="form-control" id="username" placeholder="王**">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="passWord" class="col-sm-2 control-label">密&nbsp;&nbsp;&nbsp;&nbsp;码</label>
+                            <div class="col-sm-10">
+                                <input type="password" name="password" class="form-control" id="password" placeholder="密码">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="code" class="col-sm-2 control-label">验证码</label>
+                            <div class="col-sm-6">
+                                <input type="text" name="code" class="form-control" id="code" placeholder="验证码">
+                            </div>
+                            <div class="col-sm-4">
+                                <img class="code" src="http://127.0.0.1:4399/captcha" alt="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <input type="submit" class="btn btn-danger" id="register" value="注册">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // 入口函数
+    $(function () {
+        //一:验证码
+        // 1.点击验证码图片刷新验证码
+        $('.code').on('click', function () {
+            /*
+              a.验证码不能使用ajax发送请求
+                原因：验证码服务器返回的不是字符串，而是图片二进制数据
+              b.验证码只需重设img标签的src属性即可
+              问题：img标签自带缓存功能，如果src一致，则只发一次请求
+              解决方案：添加随机参数
+            */
+            $(this).attr('src', 'http://127.0.0.1:4399/captcha?sb=' + Math.random());
+        });
+
+        //二:注册
+        // 2.注册按钮的点击事件
+        $('#register').on('click', function (e) {
+            // 2.取消默认的提交行为
+            e.preventDefault();
+            // 3.获取用户注册时候输入的用户名/密码/验证码
+            let username = $('#username').val().trim()//账号
+            let code = $('#code').val().trim()//验证码
+            $('#password').val(md5($('#password').val().trim(), 'dg'))//密码
+
+            //在密码加密之后获取密码，获取到的就是密文
+            let password = $('#password' ).val().trim();
+            console . log(password) ;
+            // md5加密 md5();
+            // 第一个参数：要加密的明文
+            // 第二个参数：加盐（作用：增加密码的复杂度；特点：同样的明文，盐不同，得到的密文不同）
+            // 细节：尽量不在控制台打印用户的明文和密码
+            // let password = $('#password').val();
+            // let miwen = md5(password,'jane');
+            // 取出表单数据，加密完之后，重新赋值给表单
+           /*
+              FormData:(1)自动获取每个表单的name和value拼接成参数 (2)上传文件
+              $('#form').serialize()：(1)自动获取每个表单的name和value拼接成参数
+            */
+            //4.发送ajax请求，完成注册
+            $.ajax({
+                url: 'http://127.0.0.1:4399/user/register',
+                type: 'post',
+                // dataType: 'json',
+                data: {
+                  username,
+                  password,
+                  code
+                },
+
+                success: function (backData) {
+                    if (backData.code == 200) {
+                        alert('注册成功');
+                        // 跳转首页
+                        window.location.href = "./login.html";
+                    } else {
+                        alert(backData.msg);
+                    }
+                }
+            });
+        })
+    })
+</script>
+</body>
+
+</html>
