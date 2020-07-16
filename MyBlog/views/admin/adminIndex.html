@@ -1,0 +1,15 @@
+<!--继承 layout 模板 复用头部尾部等页面区域-->
+{% extends 'layout.html' %}
+
+{% block main %}
+<div class="jumbotron">
+    <hr>
+    管理首页
+    <hr>
+<!--    <h1>Hello, {{userInfo.username}} !</h1>-->
+    <p>
+        欢迎进入博客后台管理
+            <h2> 【{{userInfo.username}}】, 在这里,可以管理后台哦☻</h2>
+    </p>
+</div>
+{% endblock %}

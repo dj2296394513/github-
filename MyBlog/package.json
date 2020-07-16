@@ -1,0 +1,28 @@
+{
+  "name": "iBlog",
+  "version": "1.0.0",
+  "description": "Blog 个人博客系统",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Zhangyi",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookies": "^0.7.3",
+    "express": "^4.17.1",
+    "markdown": "^0.5.0",
+    "mongoose": "^4.13.21",
+    "swig": "^1.4.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zhangyei/iBlog.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/Zhangyei/iBlog/issues"
+  },
+  "homepage": "https://github.com/Zhangyei/iBlog#readme"
+}
