@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            position: absolute;
+            left: 50%;
+            top: 200px;
+            transform: translateX(-50%);
+            /*border: 0.5px solid black;*/
+        }
+
+        .container #search {
+            width: 350px;
+            height: 60px;
+            padding-left: 50px;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            background-color: #4DFFFF;
+        }
+
+        .container #alert {
+            width: 312px;
+            position: relative;
+            left: -1px;
+            display: none; /* 将ul列表隐藏 */
+        }
+
+        #alert > ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #alert > ul > li {
+            border: 0.5px solid #000;
+            height: 40px;
+            line-height: 40px;
+            padding-left: 10px;
+            border-radius: 5px;
+            background: #fff;
+            font-family: "微软雅黑 Light";
+        }
+
+        #alert > ul:last-child {
+            border-bottom: 1px solid #000;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- 搜索框 -->
+    <input type="text" id="search">
+    <!-- 动态提示的数据框liebia -->
+    <div id="alert">
+        <ul></ul>
+    </div>
+</div>
+<script src="js/jquery-1.12.4.js"></script>
+<script>
+    var $search = $("#search");
+    var $alert = $("#alert");
+    var $alertUl = $("#alert>ul");
+    // 清空列表的方法
+    function clearUl() {
+        $alertUl.empty();
+    }
+    $search.bind("input", function () {
+        // 清空列表
+        clearUl();
+        // 获取到用户所输入的内容
+        var value = $(this).val();
+        // 使用getJSON方法获取json数据
+        $.getJSON("data/server4.json", function (data) {
+            // 获取到json数据中的name值
+            $.each(data, function (input, obj) {
+                var name = obj.name;
+                if (name.indexOf(value) >= 0) {
+                    // 表示输入的内容在name中存在
+                    var valueArr = obj.value;
+                    $.each(valueArr, function (input, text) {
+                        // 将数据添加到HTML页面
+                        $alertUl.append(`<li>${text}</li>`);
+                    });
+                }
+            });
+        });
+
+        // 2.将提示框从隐藏状态切换到显示状态
+        $alert.css("display", "block");
+    }).bind("blur", function () {
+        $alert.css("display", "none");
+    });
+
+</script>
+</body>
+</html>

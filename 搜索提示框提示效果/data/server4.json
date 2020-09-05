@@ -1,0 +1,17 @@
+[
+  {
+    "name": "javascript",
+    "value": [
+      "java",
+      "javascript",
+      "javascript权威指南",
+      "javascript高级程序设计"
+    ]
+  },
+  {
+    "name":"jquery",
+    "value":[
+      "jquery", "jquery ajax","锋利的jquery"
+    ]
+  }
+]
